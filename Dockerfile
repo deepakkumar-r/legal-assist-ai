@@ -17,4 +17,4 @@ COPY --from=build /app/backend/dist backend/dist
 COPY --from=build /app/shared/dist shared/dist
 RUN npm ci --omit=dev
 EXPOSE 8787
-CMD ["node","backend/dist/index.js"]
+CMD ["node","backend/dist/index.mjs"]
