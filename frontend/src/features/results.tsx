@@ -1,6 +1,7 @@
 import { ChevronRight, Gavel, MessageCircle } from 'lucide-react';
 import type { Analysis, Checklist, Comparison, QaAnswer } from '@lexclarity/shared';
 import { RiskBadge } from '../components';
+import { apiUrl } from '../api';
 
 export function AnalysisView({
   analysis,
@@ -36,7 +37,7 @@ export function AnalysisView({
           <button className="export" onClick={() => window.print()}>
             Save PDF
           </button>
-          <a className="export" href={`/api/documents/${documentId}/export.md`} download>
+          <a className="export" href={apiUrl(`/api/documents/${documentId}/export.md`)} download>
             Export .md
           </a>
         </div>
@@ -132,7 +133,7 @@ export function AnalysisView({
       </div>
       <a
         className="handoff"
-        href={`/api/documents/${documentId}/handoff`}
+        href={apiUrl(`/api/documents/${documentId}/handoff`)}
         target="_blank"
         rel="noreferrer"
       >

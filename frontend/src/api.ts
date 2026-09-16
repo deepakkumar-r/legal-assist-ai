@@ -1,6 +1,9 @@
 import type { Analysis, Checklist, Comparison, QaAnswer } from '@lexclarity/shared';
+const apiOrigin =
+  (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, '') ?? '';
+export const apiUrl = (path: string) => `${apiOrigin}${path}`;
 const request = async <T>(url: string, init?: RequestInit): Promise<T> => {
-  const response = await fetch(url, {
+  const response = await fetch(apiUrl(url), {
     headers: { 'content-type': 'application/json', ...init?.headers },
     ...init,
   });
@@ -33,7 +36,7 @@ export const api = {
   extract: async (file: File) => {
     const data = new FormData();
     data.append('file', file);
-    const response = await fetch('/api/extract', { method: 'POST', body: data });
+    const response = await fetch(apiUrl('/api/extract'), { method: 'POST', body: data });
     if (!response.ok) {
       const body = (await response.json().catch(() => null)) as {
         error?: { message?: string };

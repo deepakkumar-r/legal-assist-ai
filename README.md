@@ -58,6 +58,18 @@ Fastify API ── guardrails + rate limit + Zod ──► Encrypted repository 
 
 See [.env.example](.env.example). Models were checked against the official model catalog on 2026-09-16: `gemini-3.1-pro-preview`, `gemini-3.6-flash`, and stable `gemini-embedding-2`. Override all three without code changes. The client falls back to Flash when Pro quota is unavailable. `gemini-3.6-flash` was verified with this project's full structured analysis schema.
 
+## Vercel deployment
+
+Deploy from the repository root. The committed `vercel.json` builds the shared package before the frontend and publishes `frontend/dist`. If the Vercel project instead uses `frontend` as its Root Directory, the frontend `prebuild` script still compiles `@lexclarity/shared` automatically.
+
+Set this public frontend environment variable in Vercel:
+
+```env
+VITE_API_BASE_URL=https://your-deployed-api.example.com
+```
+
+The Fastify backend is a stateful Node service and is not bundled into the static Vite deployment. Deploy it to a Node host such as Render, Railway, Fly.io, or a container platform, then set its `APP_ORIGIN` to the exact Vercel site origin. Keep `GEMINI_API_KEY` and `DATA_ENCRYPTION_KEY` only on the backend host—never in Vercel variables prefixed with `VITE_`.
+
 ## Responsible-use limitations
 
 LexClarity does not represent users, file documents, predict outcomes, or replace a lawyer. Even grounded model output may omit or misinterpret a complex clause. Jurisdiction-specific law is intentionally out of scope. Verify source language and important decisions with a qualified professional. The development store is in-memory and single-process; production deployment should use authenticated users, a managed KMS, durable encrypted storage, malware scanning, and TLS termination.
