@@ -11,9 +11,4 @@ loadDotEnv({ path: existsSync(localEnv) ? localEnv : resolve(process.cwd(), '../
 const config = loadConfig();
 const llm = config.DEMO_MODE ? new DemoLLMClient() : new GeminiLLMClient(config);
 const app = buildApp(config, llm);
-
-if (!process.env.VERCEL) {
-  void app.listen({ port: config.PORT, host: '0.0.0.0' });
-}
-
-export = app;
+void app.listen({ port: config.PORT, host: '0.0.0.0' });
