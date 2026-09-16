@@ -334,7 +334,7 @@ nav a {
 .panel-title p {
   margin: 3px 0 0;
   font-size: 11px;
-  color: #7a8583;
+  color: #5d6866;
 }
 .panel-title.second {
   padding-top: 26px;
@@ -357,14 +357,14 @@ nav a {
   background: #e8f4ef;
 }
 .dropzone span {
-  color: #6d7977;
+  color: #596563;
   font-size: 10px;
 }
 .or {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #89928f;
+  color: #596563;
   font-size: 10px;
   margin: 16px 0;
 }
@@ -783,7 +783,7 @@ fieldset {
 .how article > span {
   position: absolute;
   right: 20px;
-  color: #9a9f99;
+  color: #596563;
   font-size: 11px;
 }
 .how article svg {
@@ -794,7 +794,7 @@ fieldset {
 }
 .how p {
   font-size: 13px;
-  color: #687471;
+  color: #596563;
   line-height: 1.6;
 }
 footer {

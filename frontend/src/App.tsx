@@ -190,6 +190,7 @@ export function App() {
                 className="sr-only"
                 type="file"
                 accept=".pdf,.docx,.txt"
+                aria-label="Upload legal document"
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) void choose(file);
