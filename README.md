@@ -60,20 +60,22 @@ See [.env.example](.env.example). Models were checked against the official model
 
 ## Vercel deployment
 
-Vercel deploys this monorepo as two connected Projects from the same GitHub repository:
+Deploy the repository as one Vercel Project with the Root Directory left blank (repository root). The root `vercel.json` builds the Vite frontend into `frontend/dist` and routes `/api/*` plus `/health` through a single Vercel Function backed by Fastify.
 
-1. **Frontend project:** Root Directory `frontend`, Framework Preset `Vite`, Output Directory `dist`.
-2. **API project:** Root Directory `backend`, Framework Preset `Fastify` (or automatic detection). Do not configure an Output Directory.
-
-Both workspaces compile `@lexclarity/shared` automatically through their `prebuild` scripts. The per-folder `vercel.json` in `frontend/` overrides stale dashboard output settings.
-
-After the API project deploys, set this public environment variable on the frontend project:
+Set these Project environment variables:
 
 ```env
-VITE_API_BASE_URL=https://your-deployed-api.example.com
+GEMINI_API_KEY=your-key
+GEMINI_REASONING_MODEL=gemini-3.1-pro-preview
+GEMINI_FAST_MODEL=gemini-3.6-flash
+GEMINI_EMBEDDING_MODEL=gemini-embedding-2
+DATA_ENCRYPTION_KEY=your-64-character-hex-key
+DEMO_MODE=false
+AUTH_MODE=local
+APP_ORIGIN=https://your-project.vercel.app
 ```
 
-Set the API project's `APP_ORIGIN` to the exact frontend deployment origin. Add `GEMINI_API_KEY`, `DATA_ENCRYPTION_KEY`, `DEMO_MODE=false`, and `AUTH_MODE=local` only to the API project. Never expose either secret through a variable prefixed with `VITE_`.
+Leave `VITE_API_BASE_URL` unset for the one-project deployment: browser requests use the same origin. Never expose either secret through a variable prefixed with `VITE_`.
 
 The included encrypted repository is in-memory. A Vercel Function may be replaced or scaled at any time, so production deployments must replace it with durable storage (for example Postgres plus KMS-managed encryption). The current adapter is suitable for a short single-instance demonstration, not persistent production data.
 

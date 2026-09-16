@@ -3,5 +3,20 @@
   "buildCommand": "npm run build -w @lexclarity/frontend",
   "outputDirectory": "frontend/dist",
   "framework": "vite",
-  "installCommand": "npm install"
+  "installCommand": "npm install",
+  "functions": {
+    "api/index.ts": {
+      "maxDuration": 60
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/health",
+      "destination": "/api/index?__path=health"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "/api/index?__path=:path*"
+    }
+  ]
 }
