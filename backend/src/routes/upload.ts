@@ -13,7 +13,7 @@ const ALLOWED = new Set([
 
 Object.assign(globalThis, { DOMMatrix, ImageData, Path2D });
 
-export async function registerUploadRoutes(app: FastifyInstance, deps: RouteDependencies) {
+export function registerUploadRoutes(app: FastifyInstance, deps: RouteDependencies) {
   app.post('/api/extract', async (request) => {
     deps.identity.ownerId(request);
     const file = await request.file();

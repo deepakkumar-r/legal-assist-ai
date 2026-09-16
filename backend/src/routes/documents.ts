@@ -44,7 +44,7 @@ const escapeHtml = (value: string) =>
       character,
   );
 
-export async function registerDocumentRoutes(app: FastifyInstance, deps: RouteDependencies) {
+export function registerDocumentRoutes(app: FastifyInstance, deps: RouteDependencies) {
   app.get<{ Params: { id: string } }>('/api/documents/:id/export.md', async (request, reply) => {
     const record = deps.documents.get(deps.identity.ownerId(request), request.params.id);
     if (!record) throw new AppError('DOCUMENT_NOT_FOUND', 'Document not found.', 404);

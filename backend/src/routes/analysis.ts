@@ -9,7 +9,7 @@ import {
 import { AppError } from '../lib/errors.js';
 import type { RouteDependencies } from './types.js';
 
-export async function registerAnalysisRoutes(app: FastifyInstance, deps: RouteDependencies) {
+export function registerAnalysisRoutes(app: FastifyInstance, deps: RouteDependencies) {
   app.post(
     '/api/analyze',
     { config: { rateLimit: { max: 8, timeWindow: '1 minute' } } },

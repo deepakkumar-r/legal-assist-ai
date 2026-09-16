@@ -21,7 +21,7 @@ import type { LLMClient } from './services/llm.js';
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
 /** Creates the HTTP composition root with replaceable infrastructure adapters. */
-export async function buildApp(config: Config, llm: LLMClient) {
+export function buildApp(config: Config, llm: LLMClient) {
   const app = Fastify({
     logger:
       config.NODE_ENV === 'test'
@@ -36,10 +36,10 @@ export async function buildApp(config: Config, llm: LLMClient) {
           },
     bodyLimit: MAX_FILE_SIZE + 1024,
   });
-  await app.register(cors, { origin: config.APP_ORIGIN, credentials: true });
-  await app.register(helmet, { contentSecurityPolicy: false });
-  await app.register(rateLimit, { max: 30, timeWindow: '1 minute' });
-  await app.register(multipart, { limits: { fileSize: MAX_FILE_SIZE, files: 1 } });
+  app.register(cors, { origin: config.APP_ORIGIN, credentials: true });
+  app.register(helmet, { contentSecurityPolicy: false });
+  app.register(rateLimit, { max: 30, timeWindow: '1 minute' });
+  app.register(multipart, { limits: { fileSize: MAX_FILE_SIZE, files: 1 } });
 
   const encryptionKey = config.DATA_ENCRYPTION_KEY
     ? Buffer.from(config.DATA_ENCRYPTION_KEY, 'hex')
@@ -70,8 +70,8 @@ export async function buildApp(config: Config, llm: LLMClient) {
     status: 'ok',
     provider: config.DEMO_MODE ? 'demo' : 'gemini',
   }));
-  await registerUploadRoutes(app, dependencies);
-  await registerAnalysisRoutes(app, dependencies);
-  await registerDocumentRoutes(app, dependencies);
+  registerUploadRoutes(app, dependencies);
+  registerAnalysisRoutes(app, dependencies);
+  registerDocumentRoutes(app, dependencies);
   return app;
 }
