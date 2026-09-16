@@ -1,0 +1,30 @@
+{
+  "name": "@lexclarity/backend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@fastify/cors": "latest",
+    "@fastify/helmet": "latest",
+    "@fastify/multipart": "latest",
+    "@fastify/rate-limit": "latest",
+    "@google/genai": "latest",
+    "@lexclarity/shared": "1.0.0",
+    "dotenv": "latest",
+    "fastify": "latest",
+    "mammoth": "latest",
+    "pdf-parse": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/pdf-parse": "latest",
+    "tsx": "latest",
+    "typescript": "latest"
+  }
+}

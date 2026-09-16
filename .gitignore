@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+.env
+*.sqlite
+*.sqlite-journal
+uploads/
+playwright-report/
+test-results/
+*.log
+*.pid
+*.tsbuildinfo

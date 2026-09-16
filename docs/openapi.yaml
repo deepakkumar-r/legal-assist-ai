@@ -1,0 +1,104 @@
+openapi: 3.1.0
+info:
+  { title: LexClarity API, version: 1.0.0, description: Informational legal-document analysis API. }
+servers: [{ url: http://localhost:8787 }]
+paths:
+  /health:
+    get: { summary: Health check, responses: { '200': { description: Healthy } } }
+  /api/extract:
+    post:
+      summary: Extract text from one hardened upload
+      requestBody:
+        {
+          required: true,
+          content:
+            {
+              multipart/form-data:
+                {
+                  schema:
+                    {
+                      type: object,
+                      required: [file],
+                      properties: { file: { type: string, format: binary } },
+                    },
+                },
+            },
+        }
+      responses:
+        {
+          '200': { description: Extracted },
+          '413': { $ref: '#/components/responses/Error' },
+          '415': { $ref: '#/components/responses/Error' },
+        }
+  /api/analyze:
+    post:
+      summary: Simplify and classify a legal document with Gemini
+      requestBody: { $ref: '#/components/requestBodies/Analyze' }
+      responses:
+        {
+          '201': { description: Analysis created },
+          '400': { $ref: '#/components/responses/Error' },
+        }
+  /api/compare:
+    post:
+      summary: Compare two documents with Gemini
+      responses: { '200': { description: Structured comparison } }
+  /api/qa:
+    post:
+      summary: Answer from retrieved document evidence
+      responses: { '200': { description: Cited answer } }
+  /api/next-steps:
+    post:
+      summary: Generate informational options and attorney questions
+      responses: { '200': { description: Checklist } }
+  /api/documents/{id}:
+    delete:
+      summary: Permanently delete source and derived data
+      parameters: [{ in: path, name: id, required: true, schema: { type: string, format: uuid } }]
+      responses:
+        { '204': { description: Deleted }, '404': { $ref: '#/components/responses/Error' } }
+  /api/documents/{id}/export.md:
+    get:
+      summary: Export an analysis as Markdown
+      parameters: [{ in: path, name: id, required: true, schema: { type: string, format: uuid } }]
+      responses: { '200': { description: Markdown report } }
+  /api/documents/{id}/handoff:
+    get:
+      summary: Compile an attorney-intake brief
+      parameters: [{ in: path, name: id, required: true, schema: { type: string, format: uuid } }]
+      responses: { '200': { description: Handoff brief } }
+components:
+  requestBodies:
+    Analyze:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [title, text]
+            properties:
+              title: { type: string, maxLength: 120 }
+              text: { type: string, minLength: 80, maxLength: 500000 }
+              readingLevel: { type: string, enum: [simple, detailed] }
+              language: { type: string, enum: [en, es] }
+  responses:
+    Error:
+      description: Consistent error envelope
+      content:
+        {
+          application/json:
+            {
+              schema:
+                {
+                  type: object,
+                  properties:
+                    {
+                      error:
+                        {
+                          type: object,
+                          properties: { code: { type: string }, message: { type: string } },
+                        },
+                    },
+                },
+            },
+        }
