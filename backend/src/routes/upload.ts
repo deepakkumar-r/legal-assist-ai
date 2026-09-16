@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify';
+import { DOMMatrix, ImageData, Path2D } from '@napi-rs/canvas';
 import mammoth from 'mammoth';
-import { PDFParse } from 'pdf-parse';
 import { AppError } from '../lib/errors.js';
 import type { RouteDependencies } from './types.js';
 
@@ -10,6 +10,8 @@ const ALLOWED = new Set([
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'text/plain',
 ]);
+
+Object.assign(globalThis, { DOMMatrix, ImageData, Path2D });
 
 export async function registerUploadRoutes(app: FastifyInstance, deps: RouteDependencies) {
   app.post('/api/extract', async (request) => {
@@ -28,6 +30,7 @@ export async function registerUploadRoutes(app: FastifyInstance, deps: RouteDepe
 
     let text: string;
     if (file.mimetype === 'application/pdf') {
+      const { PDFParse } = await import('pdf-parse');
       const parser = new PDFParse({ data: buffer });
       try {
         text = (await parser.getText()).text;
