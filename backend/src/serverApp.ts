@@ -75,3 +75,4 @@ export function buildApp(config: Config, llm: LLMClient) {
   registerDocumentRoutes(app, dependencies);
   return app;
 }
+

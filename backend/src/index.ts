@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { config as loadDotEnv } from 'dotenv';
 import { loadConfig } from './config.js';
-import { buildApp } from './app.js';
+import { buildApp } from './serverApp.js';
 import { GeminiLLMClient } from './services/llm.js';
 import { DemoLLMClient } from './services/mock.js';
 

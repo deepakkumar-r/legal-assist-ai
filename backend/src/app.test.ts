@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { buildApp } from './app.js';
+import { buildApp } from './serverApp.js';
 import type { Config } from './config.js';
 import type { LLMClient } from './services/llm.js';
 const config: Config = {
