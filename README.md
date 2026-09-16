@@ -4,6 +4,8 @@
 
 > This is general information, not legal advice. Consult a licensed attorney for advice about your specific situation.
 
+Deployed link : https://legal-assist-ai-gamma.vercel.app/
+
 [GenAI services used](GENAI_USAGE.md) · [Evaluation evidence](RUBRIC.md) · [Security](SECURITY.md) · [Testing](TESTING.md) · [Accessibility](ACCESSIBILITY.md)
 
 ## Quick start
