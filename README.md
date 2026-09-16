@@ -60,15 +60,22 @@ See [.env.example](.env.example). Models were checked against the official model
 
 ## Vercel deployment
 
-Deploy from the repository root. The committed `vercel.json` builds the shared package before the frontend and publishes `frontend/dist`. If the Vercel project instead uses `frontend` as its Root Directory, the frontend `prebuild` script still compiles `@lexclarity/shared` automatically.
+Vercel deploys this monorepo as two connected Projects from the same GitHub repository:
 
-Set this public frontend environment variable in Vercel:
+1. **Frontend project:** Root Directory `frontend`, Framework Preset `Vite`, Output Directory `dist`.
+2. **API project:** Root Directory `backend`, Framework Preset `Fastify` (or automatic detection). Do not configure an Output Directory.
+
+Both workspaces compile `@lexclarity/shared` automatically through their `prebuild` scripts. The per-folder `vercel.json` in `frontend/` overrides stale dashboard output settings.
+
+After the API project deploys, set this public environment variable on the frontend project:
 
 ```env
 VITE_API_BASE_URL=https://your-deployed-api.example.com
 ```
 
-The Fastify backend is a stateful Node service and is not bundled into the static Vite deployment. Deploy it to a Node host such as Render, Railway, Fly.io, or a container platform, then set its `APP_ORIGIN` to the exact Vercel site origin. Keep `GEMINI_API_KEY` and `DATA_ENCRYPTION_KEY` only on the backend host—never in Vercel variables prefixed with `VITE_`.
+Set the API project's `APP_ORIGIN` to the exact frontend deployment origin. Add `GEMINI_API_KEY`, `DATA_ENCRYPTION_KEY`, `DEMO_MODE=false`, and `AUTH_MODE=local` only to the API project. Never expose either secret through a variable prefixed with `VITE_`.
+
+The included encrypted repository is in-memory. A Vercel Function may be replaced or scaled at any time, so production deployments must replace it with durable storage (for example Postgres plus KMS-managed encryption). The current adapter is suitable for a short single-instance demonstration, not persistent production data.
 
 ## Responsible-use limitations
 
