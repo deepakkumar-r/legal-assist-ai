@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "concurrently -n api,web -c blue,green \"npm:dev -w backend\" \"npm:dev -w frontend\"",
     "build": "npm run build -w shared && npm run build -w backend && npm run build -w frontend",
-    "typecheck": "npm run build -w shared && npm run typecheck -w backend && npm run typecheck -w frontend && tsc -p api/tsconfig.json",
+    "typecheck": "npm run build -w shared && npm run typecheck -w backend && npm run typecheck -w frontend",
     "test": "vitest run --coverage",
     "test:e2e": "playwright test",
     "lint": "eslint .",

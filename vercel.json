@@ -1,22 +1,32 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build -w @lexclarity/frontend",
-  "outputDirectory": "frontend/dist",
-  "framework": "vite",
-  "installCommand": "npm install",
-  "functions": {
-    "api/index.ts": {
-      "maxDuration": 60
+  "services": {
+    "frontend": {
+      "root": "frontend"
+    },
+    "backend": {
+      "root": "backend",
+      "entrypoint": "src/index.ts"
     }
   },
   "rewrites": [
     {
       "source": "/health",
-      "destination": "/api/index?__path=health"
+      "destination": {
+        "service": "backend"
+      }
     },
     {
-      "source": "/api/:path*",
-      "destination": "/api/index?__path=:path*"
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "frontend"
+      }
     }
   ]
 }

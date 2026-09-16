@@ -60,7 +60,7 @@ See [.env.example](.env.example). Models were checked against the official model
 
 ## Vercel deployment
 
-Deploy the repository as one Vercel Project with the Root Directory left blank (repository root). The root `vercel.json` builds the Vite frontend into `frontend/dist` and routes `/api/*` plus `/health` through a single Vercel Function backed by Fastify.
+Deploy the repository as one Vercel Project with the Root Directory left blank (repository root). The root `vercel.json` defines two Vercel Services inside that project: the Vite frontend and the Fastify backend. Requests to `/api/*` and `/health` go to the backend service; every other request goes to the frontend service on the same domain.
 
 Set these Project environment variables:
 
@@ -77,7 +77,7 @@ APP_ORIGIN=https://your-project.vercel.app
 
 Leave `VITE_API_BASE_URL` unset for the one-project deployment: browser requests use the same origin. Never expose either secret through a variable prefixed with `VITE_`.
 
-The included encrypted repository is in-memory. A Vercel Function may be replaced or scaled at any time, so production deployments must replace it with durable storage (for example Postgres plus KMS-managed encryption). The current adapter is suitable for a short single-instance demonstration, not persistent production data.
+The included encrypted repository is in-memory. A Vercel backend instance may be replaced or scaled at any time, so production deployments must replace it with durable storage (for example Postgres plus KMS-managed encryption). The current storage is suitable for a short demonstration, not persistent production data.
 
 ## Responsible-use limitations
 
