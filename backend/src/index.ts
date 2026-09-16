@@ -17,7 +17,7 @@ async function createApp() {
 
 const application = createApp();
 
-export default async function handler(request: IncomingMessage, response: ServerResponse) {
+async function handler(request: IncomingMessage, response: ServerResponse) {
   const { app } = await application;
   await app.ready();
   app.server.emit('request', request, response);
@@ -28,3 +28,5 @@ if (!process.env.VERCEL) {
     app.listen({ port: config.PORT, host: '0.0.0.0' }),
   );
 }
+
+export = handler;
