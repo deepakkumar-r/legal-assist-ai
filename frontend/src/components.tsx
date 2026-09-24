@@ -1,6 +1,6 @@
 import { AlertTriangle, CheckCircle2, Info, ShieldAlert } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { DISCLAIMER } from '@lexclarity/shared';
+import { DISCLAIMER } from '@lexclarity/shared/constants';
 
 export function Disclaimer() {
   return (

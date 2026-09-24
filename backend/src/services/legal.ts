@@ -50,8 +50,11 @@ export class LegalService {
     return output;
   }
   async compare(a: string, b: string): Promise<Comparison> {
+    const key = contentHash('compare', a, b);
+    const hit = this.cache.get<Comparison>(key);
+    if (hit) return hit;
     const prompt = `Compare A and B. Identify changed, missing, and unusual terms; assess materiality without advising. ${evidence('document_a', a)} ${evidence('document_b', b)}`;
-    return ComparisonSchema.parse(
+    const output = ComparisonSchema.parse(
       await this.llm.generateStructured(
         prompt,
         'reasoning',
@@ -59,6 +62,8 @@ export class LegalService {
         jsonSchema(ComparisonSchema),
       ),
     );
+    this.cache.set(key, output);
+    return output;
   }
   async answer(text: string, question: string): Promise<QaAnswer> {
     const key = contentHash('qa', text, question);
@@ -85,9 +90,12 @@ export class LegalService {
     return output;
   }
   async nextSteps(text: string, goal: string): Promise<Checklist> {
+    const key = contentHash('next-steps', text, goal);
+    const hit = this.cache.get<Checklist>(key);
+    if (hit) return hit;
     const chunks = chunkDocument(text).slice(0, 12);
     const prompt = `Provide general options, typical next steps, and questions for a licensed attorney for the user's goal. Do not direct the user or assume jurisdiction. ${evidence('goal', goal)} ${evidence('document', chunks.map((c: Chunk) => `${c.section}: ${c.text}`).join('\n'))}`;
-    return ChecklistSchema.parse(
+    const output = ChecklistSchema.parse(
       await this.llm.generateStructured(
         prompt,
         'fast',
@@ -95,11 +103,16 @@ export class LegalService {
         jsonSchema(ChecklistSchema),
       ),
     );
+    this.cache.set(key, output);
+    return output;
   }
   async translateAnalysis(analysis: Analysis, language: 'en' | 'es'): Promise<Analysis> {
     if (language === 'en') return analysis;
+    const key = contentHash('translate-analysis', JSON.stringify(analysis), language);
+    const hit = this.cache.get<Analysis>(key);
+    if (hit) return hit;
     const prompt = `Translate all human-readable strings in this JSON to ${language}; preserve ids, category enums, risk enums, and structure. ${evidence('json', JSON.stringify(analysis))}`;
-    return AnalysisSchema.parse(
+    const output = AnalysisSchema.parse(
       await this.llm.generateStructured(
         prompt,
         'fast',
@@ -107,5 +120,7 @@ export class LegalService {
         jsonSchema(AnalysisSchema),
       ),
     );
+    this.cache.set(key, output);
+    return output;
   }
 }

@@ -10,23 +10,23 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@fastify/cors": "latest",
-    "@fastify/helmet": "latest",
-    "@fastify/multipart": "latest",
-    "@fastify/rate-limit": "latest",
-    "@google/genai": "latest",
+    "@fastify/cors": "11.3.0",
+    "@fastify/helmet": "13.1.1",
+    "@fastify/multipart": "10.1.1",
+    "@fastify/rate-limit": "11.2.0",
+    "@google/genai": "2.22.0",
     "@lexclarity/shared": "1.0.0",
     "@napi-rs/canvas": "^0.1.80",
-    "dotenv": "latest",
-    "fastify": "latest",
-    "mammoth": "latest",
-    "pdf-parse": "latest",
-    "zod": "latest"
+    "dotenv": "17.4.2",
+    "fastify": "5.12.4",
+    "mammoth": "1.12.3",
+    "pdf-parse": "2.4.5",
+    "zod": "4.6.5"
   },
   "devDependencies": {
-    "@types/node": "latest",
-    "@types/pdf-parse": "latest",
-    "tsx": "latest",
-    "typescript": "latest"
+    "@types/node": "22.20.3",
+    "@types/pdf-parse": "1.1.5",
+    "tsx": "4.23.13",
+    "typescript": "6.0.3"
   }
 }

@@ -19,20 +19,20 @@
     "audit": "npm audit --audit-level=high"
   },
   "devDependencies": {
-    "@eslint/js": "latest",
-    "@axe-core/playwright": "latest",
-    "@playwright/test": "latest",
-    "@types/node": "latest",
-    "@vitest/coverage-v8": "latest",
-    "concurrently": "latest",
-    "eslint": "latest",
-    "eslint-plugin-react-hooks": "latest",
-    "eslint-plugin-react-refresh": "latest",
-    "globals": "latest",
-    "prettier": "latest",
-    "typescript": "latest",
-    "typescript-eslint": "latest",
-    "vitest": "latest"
+    "@eslint/js": "10.0.1",
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
+    "@types/node": "22.20.3",
+    "@vitest/coverage-v8": "5.0.1",
+    "concurrently": "10.0.5",
+    "eslint": "10.10.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.7",
+    "globals": "17.12.0",
+    "prettier": "3.9.6",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.70.0",
+    "vitest": "5.0.1"
   },
   "engines": {
     "node": ">=20"

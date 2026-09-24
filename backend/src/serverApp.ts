@@ -37,7 +37,17 @@ export function buildApp(config: Config, llm: LLMClient) {
     bodyLimit: MAX_FILE_SIZE + 1024,
   });
   app.register(cors, { origin: config.APP_ORIGIN, credentials: true });
-  app.register(helmet, { contentSecurityPolicy: false });
+  app.register(helmet, {
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'none'"],
+        frameAncestors: ["'none'"],
+        formAction: ["'none'"],
+        baseUri: ["'none'"],
+      },
+    },
+    referrerPolicy: { policy: 'no-referrer' },
+  });
   app.register(rateLimit, { max: 30, timeWindow: '1 minute' });
   app.register(multipart, { limits: { fileSize: MAX_FILE_SIZE, files: 1 } });
 
@@ -75,4 +85,3 @@ export function buildApp(config: Config, llm: LLMClient) {
   registerDocumentRoutes(app, dependencies);
   return app;
 }
-

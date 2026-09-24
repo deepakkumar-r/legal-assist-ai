@@ -2,6 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { EncryptedDocumentStore } from './cryptoStore.js';
 const analysis = { documentType: 'NDA', overview: 'Overview', sections: [], clauses: [] };
 describe('EncryptedDocumentStore', () => {
+  it('requires an AES-256 key', () => {
+    expect(() => new EncryptedDocumentStore(Buffer.alloc(16))).toThrow('32 bytes');
+  });
+
   it('round trips and permanently deletes encrypted records', () => {
     const store = new EncryptedDocumentStore(Buffer.alloc(32, 7));
     const saved = store.save('owner-a', 'Test', 'secret text', analysis);

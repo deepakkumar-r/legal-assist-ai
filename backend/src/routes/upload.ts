@@ -13,6 +13,24 @@ const ALLOWED = new Set([
 
 Object.assign(globalThis, { DOMMatrix, ImageData, Path2D });
 
+const hasSignature = (buffer: Buffer, signature: string) =>
+  buffer.subarray(0, signature.length).toString('binary') === signature;
+
+const validateContent = (buffer: Buffer, mimetype: string) => {
+  if (mimetype === 'application/pdf' && !hasSignature(buffer, '%PDF-')) {
+    throw new AppError('INVALID_FILE_CONTENT', 'The uploaded file is not a valid PDF.', 415);
+  }
+  if (
+    mimetype.includes('wordprocessingml') &&
+    !['PK\x03\x04', 'PK\x05\x06', 'PK\x07\x08'].some((signature) => hasSignature(buffer, signature))
+  ) {
+    throw new AppError('INVALID_FILE_CONTENT', 'The uploaded file is not a valid DOCX.', 415);
+  }
+  if (mimetype === 'text/plain' && buffer.includes(0)) {
+    throw new AppError('INVALID_FILE_CONTENT', 'The uploaded text file contains binary data.', 415);
+  }
+};
+
 export function registerUploadRoutes(app: FastifyInstance, deps: RouteDependencies) {
   app.post('/api/extract', async (request) => {
     deps.identity.ownerId(request);
@@ -25,6 +43,7 @@ export function registerUploadRoutes(app: FastifyInstance, deps: RouteDependenci
     if (buffer.length > MAX_FILE_SIZE) {
       throw new AppError('FILE_TOO_LARGE', 'Files must be 10 MB or smaller.', 413);
     }
+    validateContent(buffer, file.mimetype);
     const scan = await deps.scanner.scan(buffer, file.filename);
     if (!scan.safe) throw new AppError('MALWARE_REJECTED', scan.reason ?? 'Unsafe file.', 415);
 

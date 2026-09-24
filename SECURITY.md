@@ -7,8 +7,9 @@ Uploaded contracts and derived analysis may contain PII, financial terms, signat
 ## Controls
 
 - AES-256-GCM authenticated encryption at rest with a unique 96-bit IV per document. Production must supply a KMS-managed 32-byte key.
-- TLS is mandatory at the production ingress. Helmet headers and a single-origin CORS policy are enabled.
-- Zod validation limits every JSON field. Uploads allow only PDF, DOCX, and TXT, cap at 10 MB, reject executable headers, and expose a replaceable scanning boundary.
+- TLS is mandatory at the production ingress. Helmet applies a deny-by-default Content Security Policy and defensive headers; CORS is restricted to the configured origin.
+- Zod validation limits every JSON field. Uploads allow only PDF, DOCX, and TXT, cap at 10 MB, verify magic bytes or reject binary text, reject executable headers, and expose a replaceable scanning boundary.
+- Runtime and development dependencies are pinned, lockfile-controlled, audited in CI, and currently report zero known vulnerabilities.
 - AI routes are rate limited. Document bodies and authorization headers are redacted from logs.
 - The system instruction states that document/question content is untrusted evidence. XML-style delimiters are escaped; structured output is validated before use. Injection tests verify hostile text remains within the evidence delimiter.
 - Permanent deletion removes both encrypted source and derived analysis from the active store.

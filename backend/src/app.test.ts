@@ -69,4 +69,20 @@ describe('API', () => {
     expect(response.statusCode).toBe(404);
     await app.close();
   });
+  it('rejects a spoofed PDF upload by file signature', async () => {
+    const app = buildApp(config, llm);
+    const boundary = 'test-boundary';
+    const body = Buffer.from(
+      `--${boundary}\r\nContent-Disposition: form-data; name="file"; filename="fake.pdf"\r\nContent-Type: application/pdf\r\n\r\nnot a pdf\r\n--${boundary}--\r\n`,
+    );
+    const response = await app.inject({
+      method: 'POST',
+      url: '/api/extract',
+      headers: { 'content-type': `multipart/form-data; boundary=${boundary}` },
+      payload: body,
+    });
+    expect(response.statusCode).toBe(415);
+    expect(response.json().error.code).toBe('INVALID_FILE_CONTENT');
+    await app.close();
+  });
 });

@@ -1,7 +1,5 @@
 import { z } from 'zod';
-
-export const DISCLAIMER =
-  'This is general information, not legal advice. Consult a licensed attorney for advice about your specific situation.';
+export { DISCLAIMER } from './constants.js';
 export const RiskLevel = z.enum(['low', 'medium', 'high']);
 export const ClauseCategory = z.enum([
   'Obligations',

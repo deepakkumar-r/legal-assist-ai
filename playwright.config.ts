@@ -7,7 +7,8 @@ export default defineConfig({
   reporter: [['html', { open: 'never' }], ['list']],
   use: { baseURL: 'http://localhost:5173', trace: 'on-first-retry' },
   webServer: {
-    command: 'npm run dev',
+    command: 'node ../node_modules/vite/bin/vite.js',
+    cwd: './frontend',
     url: 'http://localhost:5173',
     reuseExistingServer: true,
     timeout: 120_000,

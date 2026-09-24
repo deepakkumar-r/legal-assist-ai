@@ -11,9 +11,12 @@ export default defineConfig({
         'backend/src/lib/chunking.ts',
         'backend/src/lib/cryptoStore.ts',
         'backend/src/lib/prompts.ts',
+        'backend/src/ports/cache.ts',
+        'backend/src/ports/identity.ts',
+        'backend/src/ports/malwareScanner.ts',
         'backend/src/services/legal.ts',
       ],
-      thresholds: { lines: 80, statements: 80 },
+      thresholds: { lines: 100, statements: 100, functions: 100, branches: 90 },
     },
   },
 });

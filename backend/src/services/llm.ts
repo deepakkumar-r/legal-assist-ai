@@ -116,20 +116,22 @@ export class GeminiLLMClient implements LLMClient {
   }
   async embed(texts: string[]) {
     const rows: number[][] = [];
-    for (const text of texts) {
+    const batchSize = 100;
+    for (let offset = 0; offset < texts.length; offset += batchSize) {
+      const batch = texts.slice(offset, offset + batchSize);
       let response;
       try {
         response = await this.retry(() =>
           this.ai.models.embedContent({
             model: this.config.GEMINI_EMBEDDING_MODEL,
-            contents: text,
+            contents: batch,
             config: { outputDimensionality: 768 },
           }),
         );
       } catch (error) {
         throw this.providerError(error);
       }
-      rows.push(response.embeddings?.[0]?.values ?? []);
+      rows.push(...(response.embeddings ?? []).map((embedding) => embedding.values ?? []));
     }
     return rows;
   }
